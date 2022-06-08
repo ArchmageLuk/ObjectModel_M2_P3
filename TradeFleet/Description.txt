@@ -1,0 +1,18 @@
+﻿
+Solution for construction of spaceship based on imputs
+
+1. Program.cs launches method Main()
+2. Main() launches StartConstruction() in ConstructionYard().cs
+3. ConstructionYard() promts user to choose size of ship hull
+4. After choosing size of the hull, it creates corresponding array of ShipParts.cs (3 for small, 5 for medium, 7 for big)
+5. Then user chooses tipe of Bridge for the first module, set of middle modules (cargo, weapon, living quarters, engines) and the engine for the last
+6. All choosen modules are written into the created array.
+7. Then Shipyard calculates cost, weight, speed, military power and number of personnel by going throug corresponding fields of every object in the array
+8. Then program gives little summary of created ship (i.e. "small, fast and dangerous — perfect patrol boat", or "big hull, big cargo — use it to carry goods" etc.)
+
+
+
+To achieve:
+1. Count the price of constructed ship (sum of modules)
+2. Sort modules of the result ship by their price
+3. Make search engine for the needed module (by its parameters)
