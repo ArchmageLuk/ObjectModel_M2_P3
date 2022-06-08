@@ -10,6 +10,7 @@ namespace TradeFleet
     {
         public Bridge()
         {
+            Partname = "bridge";
             Price = 1000;
             Cargospace = 20;
             Rooms = 4;

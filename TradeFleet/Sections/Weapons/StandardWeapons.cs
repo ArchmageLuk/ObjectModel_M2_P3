@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace TradeFleet.Sections
 {
-    public class Rooms : ShipParts
+    public class StandardWeapons : ShipParts 
     {
-        public Rooms()
+        public StandardWeapons()
         {
-            Price = 10000;
-            Cargospace = 20;
-            Rooms = 50;
+            Price = 3500;
+            Cargospace = -25;
+            Might = 300;
         }
     }
 }

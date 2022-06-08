@@ -13,8 +13,9 @@ namespace TradeFleet
         {
             Console.WriteLine("Welcome, Head Engineer.");
             Console.WriteLine("Construction Yard is operational and ready");
-            Console.WriteLine("Choose hull for the ship (type 'Small', 'Medium', or 'Large'");
+            Console.WriteLine("Choose hull for the ship (type 'Small', 'Medium', or 'Large')");
             string? hulltype = Console.ReadLine();
+            Console.WriteLine(" ");
 
             int shipsize = 1;
 
@@ -34,59 +35,90 @@ namespace TradeFleet
             }
 
             ShipParts[] emptyhull = new ShipParts[shipsize];
-            Console.WriteLine(shipsize);
+
+            Console.WriteLine(" ");
+            Console.WriteLine($"Choose what module to install in a section: cargo, weapon, rooms, or engine");
+            Console.WriteLine("And what subclass of the module should it be (standard, military, or cruise)");
+            Console.WriteLine("i.e. 'standard cargo' or 'cruise rooms'");
+            Console.WriteLine("For weapons it's light, heavy or standard");
+            Console.WriteLine(" ");
 
             for (int i = 0; i < emptyhull.Length; i++)
             {
                 if (i == 0)
                 {
                     Console.WriteLine($"Choose a bridge for section {i + 1}");
-                    ShipParts bridge = new Bridge();
-                    emptyhull[i] = bridge;
+                    string? parttype = Console.ReadLine();
+                    ShipParts part = new Bridge();
+                    new Modification().Modify(part, parttype);
+                    emptyhull[i] = part;
                 }
 
                 if (i > 0 & i < emptyhull.Length - 1)
                 {
-                    Console.WriteLine($"Choose what to install in the section {i + 1}: cargo, weapon, rooms, or engine");
+                    Console.WriteLine($"Choose what module to install in the section {i + 1}: cargo, weapon, rooms, or engine");
+                    Console.WriteLine("Type in the next module:");
                     string? module = Console.ReadLine();
-                    
-                    if (module == "cargo")
+
+                    string[] modulespecs = module.Split(" ");
+
+                    ShipParts part = new ShipParts();
+                    string parttype = modulespecs[0];
+
+                    if (modulespecs[1] == "cargo")
                     {
-                        ShipParts cargo = new Cargo();
-                        emptyhull[i] = cargo;
+                        part = new Cargo();
+                    }
+                    else if (modulespecs[1] == "engine")
+                    {
+                        part = new Engine();
+                    }
+                    else if (modulespecs[1] == "rooms")
+                    {
+                        part = new Rooms();
+                    }
+                    else if (modulespecs[1] == "weapons")
+                    {
+                        switch (modulespecs[0])
+                        {
+                            case "standard":
+                                ShipParts weapon = new StandardWeapons();
+                                emptyhull[i] = weapon;
+                                break;
+                            case "light":
+                                ShipParts ltweapon = new LightWeapons();
+                                emptyhull[i] = ltweapon;
+                                break;
+                            case "heavy":
+                                ShipParts hvweapon = new HeavyWeapon();
+                                emptyhull[i] = hvweapon;
+                                break;
+                        }
                     }
 
-                    if (module == "weapon")
-                    {
-                        ShipParts weapon = new Weapons();
-                        emptyhull[i] = weapon;
-                    }
-
-                    if (module == "rooms")
-                    {
-                        ShipParts rooms = new Rooms();
-                        emptyhull[i] = rooms;
-                    }
-
-                    if (module == "engine")
-                    {
-                        ShipParts engine = new Engine();
-                        emptyhull[i] = engine;
-                    }
+                    part = new Modification().Modify(part, parttype);
+                    emptyhull[i] = part;
                 }
 
                 if (i == emptyhull.Length - 1)
                 {
                     Console.WriteLine("Choose an engine for the last section");
-                    ShipParts engine = new Engine();
-                    emptyhull[i] = engine;
+                    string parttype = Console.ReadLine();
+                    ShipParts part = new Engine();
+                    part = new Modification().Modify(part, parttype);
+                    emptyhull[i] = part;
                 }
             }
+            Console.WriteLine(" ");
+            Console.WriteLine("Please name your ship");
+            string shipname = Console.ReadLine();
 
-            int totalprice = 0;
-            int totalspeed = 0;
-            int totalcargospace = 0;
-            int totallivingrooms = 0;
+            double totalprice = 0;
+            double totalspeed = 0;
+            double totalcargospace = 0;
+            double totallivingrooms = 0;
+            double totalmight = 0;
+            
 
             foreach (var part in emptyhull)
             {
@@ -94,13 +126,17 @@ namespace TradeFleet
                 totalspeed = totalspeed + part.Speed;
                 totalcargospace = totalcargospace + part.Cargospace;
                 totallivingrooms = totallivingrooms + part.Rooms;
+                totalmight = totalmight + part.Might;
             }
 
-            Console.WriteLine($"You ship is ready. Here is stats of your ship:");
+            Console.WriteLine(" ");
+            Console.WriteLine($"You ship {shipname} is ready. Here is stats of your ship:");
+
             Console.WriteLine($"Price = {totalprice}");
             Console.WriteLine($"Top speed = {totalspeed}");
             Console.WriteLine($"Cargo space = {totalcargospace}");
             Console.WriteLine($"Rooms for passengers and staff = {totallivingrooms}");
+            Console.WriteLine($"Might of your ship = {totalmight}");
         }
     }
 }
